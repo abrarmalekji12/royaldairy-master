@@ -32,7 +32,7 @@ import './providers/orders.dart';
 import './providers/auth.dart';
 import './database/Model.dart';
 void main() => runApp(Dairy());
-
+String google_api_ky="AIzaSyBH57M3ugU6cC7JaP2ClwreU8eNrgT-oDA";
 class Dairy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

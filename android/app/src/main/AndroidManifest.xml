@@ -11,7 +11,7 @@
         android:label="Royal Dairy"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR KEY HERE"/>
+            android:value="AIzaSyBH57M3ugU6cC7JaP2ClwreU8eNrgT-oDA"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

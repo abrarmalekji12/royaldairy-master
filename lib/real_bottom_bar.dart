@@ -1,13 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/src/scheduler/ticker.dart';
 import 'package:flutter_app/login.dart';
+import 'package:flutter_app/main.dart';
 import 'package:flutter_app/models/chhose.dart';
 import 'package:flutter_app/screens/brnad%20screens/products_screen.dart';
 import 'package:flutter_app/screens/carousel_screen.dart';
 import 'package:flutter_app/screens/drawer%20screen/edit_user_profile.dart';
 import 'package:flutter_app/screens/home_screen.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-
 import './widgets/orders_screen.dart';
 import './screens/drawer screen/payment_screen.dart';
 import './screens/drawer screen/profile_screen.dart';
@@ -26,6 +27,7 @@ import './providers/cart_provider.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 import 'database/Model.dart';
+Color unselected=Colors.grey,selected=Colors.indigoAccent;
 
 var drawerSelected = -1;
 BuildContext scaffcontext;
@@ -286,17 +288,18 @@ class _BottomBarState extends State<BottomBar> implements TickerProvider {
                               Container(
                                 width: 200,
                                 height: 70,
+                                padding: EdgeInsets.all(10),
                                 child: PlacesAutocompleteField(
                                   apiKey:
-                                  'AIzaSyBH57M3ugU6cC7JaP2ClwreU8eNrgT-oDA',
+                                  google_api_ky,
                                   controller: editAdd,
-                                  strictbounds: true,
                                   onChanged: (val) {
                                    Location.fromAddress(val);
                                    Navigator.pop(context);
                                   },
                                   mode: Mode.fullscreen,
                                   inputDecoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(5),
                                     enabled: addressField,
                                     helperText: errorAddress.isNotEmpty &&
                                         radioIndex == 0
@@ -362,7 +365,6 @@ class _BottomBarState extends State<BottomBar> implements TickerProvider {
                             ),overflow: TextOverflow.fade,
                             ),
                      ),
-                    
                   ],
                 ),
               ),
@@ -374,24 +376,19 @@ class _BottomBarState extends State<BottomBar> implements TickerProvider {
             }),
             bottomNavigationBar: 
            BottomNavigationBar(
-             backgroundColor: Colors.indigoAccent,
-             onTap: selectPage,
-               unselectedItemColor: Colors.white,
-               selectedItemColor: Colors.amber,
+             backgroundColor: Colors.white,
+                onTap: selectPage,
                currentIndex: selectpageIndex,
                unselectedFontSize: 10,
-
-             //buttonBackgroundColor: Colors.red,
-
-             //animationCurve: Curves.bounceInOut,
-             //index:1,
-             items: [
+             selectedItemColor: Colors.indigoAccent,
+               unselectedItemColor: Colors.grey.shade600,
+               items: [
                BottomNavigationBarItem(
                    icon: Icon(Icons.home), title: Text('home')),
                BottomNavigationBarItem(
-                   icon: Icon(Icons.favorite), title: Text('favourite')),
+                   icon: Icon(Icons.favorite,), title: Text('favourite')),
                BottomNavigationBarItem(
-                 icon: Icon(Icons.subscriptions),
+                 icon: Icon(Icons.subscriptions,),
                  title: Text('subscription'),
                )]
             )));

@@ -25,7 +25,7 @@ class _BrandScreenState extends State<BrandScreen> {
     return InkWell(
         onTap: () {
           MaterialPageRoute route=new MaterialPageRoute(builder: (con){
-            return productScreen(new ChooseData(animal:title, type: "Brand",products: filter[title]));
+            return productScreen(new ChooseData(animal:title, type: "Brand",products: filter[brand]));
           });
           Navigator.push(context, route);
         },
@@ -53,8 +53,6 @@ class _BrandScreenState extends State<BrandScreen> {
           ],
         ));
   }
-
-
   @override
   void initState() {
     // TODO: implement initState

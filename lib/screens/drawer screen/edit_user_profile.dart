@@ -164,7 +164,7 @@ class _UserEditProfileState extends State<UserEditProfile> {
                               height: 70,
                               child: PlacesAutocompleteField(
                                 apiKey:
-                                    'AIzaSyBH57M3ugU6cC7JaP2ClwreU8eNrgT-oDA',
+                                    google_api_ky,
                                 controller: editAdd,
                                 onChanged: (val) {
                                   errorAddress = "";

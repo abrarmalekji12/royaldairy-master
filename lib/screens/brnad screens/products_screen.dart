@@ -13,7 +13,7 @@ import '../../screens/brands_screen.dart';
 import '../../models/chhose.dart';
 
 int currentPage = 0;
-List<Product> loadedproduct=null;
+List<Product> loadedproduct = null;
 ChooseData productId;
 Map<int, String> imageurls = {};
 bool recommand = false;
@@ -25,8 +25,9 @@ class productScreen extends StatefulWidget {
 
   productScreen(ChooseData data) {
     productId = data;
-
+loadedproduct = data.products;
   }
+
   @override
   _productScreenState createState() => _productScreenState();
 }
@@ -37,44 +38,33 @@ class _productScreenState extends State<productScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    loadedproduct=null;
-    current.loadFavouriteProducts().then(
-        (nothing)
-            {
-              imageurls = {};
-              currentPage = 0;
-              loadedproduct = current.permUser.favouriteProduct;
-              recommand = loadedproduct.isEmpty;
-              if (recommand) {
-                loadedproduct = current.productStore.values.toList();
-                productId.type = "rec";
-              }
-              for (int i = 0; i < loadedproduct.length; i++)
-                current.getDownloadUrl(loadedproduct[i].imageURL).then((val) {
-                  imageurls[loadedproduct[i].productId] = val;
-                  setState(() {});
-                });
-              if (loadedproduct.length > 0)
-                favourite = isFavourite(loadedproduct[0].productId);
-              setState(() {
-
-              });
-            }
-
-    );
-     print("Favourite $favourite");
+      loadedproduct = productId.products;
+      imageurls = {};
+      currentPage = 0;
+      recommand = loadedproduct.isEmpty;
+      if (recommand) {
+        loadedproduct = current.productStore.values.toList();
+        productId.type = "rec";
+      }
+      for (int i = 0; i < loadedproduct.length; i++)
+        current.getDownloadUrl(loadedproduct[i].imageURL).then((val) {
+          imageurls[loadedproduct[i].productId] = val;
+          setState(() {});
+        });
+      if (productId.type!="fav"&&loadedproduct.length > 0)
+        favourite = isFavourite(loadedproduct[0].productId);
+      setState(() {});
+    print("Favourite $favourite");
   }
 
   @override
   Widget build(BuildContext context) {
-  
-    // int a = findLength();
     return Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: productId.type == "fav" || recommand
             ? null
             : AppBar(
-              backgroundColor: Colors.indigoAccent,
+                backgroundColor: Colors.indigoAccent,
                 title: Text(productId.animal),
                 actions: <Widget>[
                   Consumer<Cart>(
@@ -102,78 +92,87 @@ class _productScreenState extends State<productScreen>
                   )
                 ],
               ),
-        body:loadedproduct==null?
-        Container(
-        child: GridView.builder(gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,crossAxisSpacing: 30), itemCount:8,itemBuilder:(con,i){
-          return Stack(
-            children: <Widget>[
-              Shimmer.fromColors(child: Container(
-        width: dw(45),
-        color: Colors.grey,
-        height: dh(20),
-        ), baseColor: Colors.transparent, highlightColor: Colors.white),
-              Container(
-              width: dw(45),
-         color: Colors.grey,
-         height: dh(20),
-              ),
-            ],
-          );
-        }),
-          ):
-        Builder(builder: (con) {
-          scaffContext = con;
-          return Container(
-              color: Color.fromRGBO(191, 255, 254, 0.1),
-              child: (recommand)
-                  ? Container(
-                      width: dw(100),
-                      child: new Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+        body: loadedproduct == null
+            ? Container(
+                child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, crossAxisSpacing: 30),
+                    itemCount: 8,
+                    itemBuilder: (con, i) {
+                      return Stack(
                         children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                          ),
-                          Image.asset(
-                            'assets/images/product_not_found.jpg',
-                            width: MediaQuery.of(context).size.width,
-                            height: 150,
-                          ),
-                          SizedBox(
-                            height: 45,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top:5),
-                          ),
-                          Text(
-                            "Recommanded for you",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: "JosefinSans",
-                                fontSize: 25),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                          ),
+                          Shimmer.fromColors(
+                              child: Container(
+                                width: dw(45),
+                                color: Colors.grey,
+                                height: dh(20),
+                              ),
+                              baseColor: Colors.transparent,
+                              highlightColor: Colors.white),
                           Container(
-                              width: dw(100),
-                              child: CarouselScreen.direct(
-                                  current.productStore.values.toList()))
+                            width: dw(45),
+                            color: Colors.grey,
+                            height: dh(20),
+                          ),
                         ],
-                      ),
-                    )
-                  : PageView.builder(
-                      onPageChanged: (value) {
-                        favourite = isFavourite(loadedproduct[value].productId);
-                        print(productId.type);
-                        setState(() {
-                          currentPage = value;
-                        });
-                      },
-                      itemCount: loadedproduct.length,
-                      itemBuilder: (context, index) => DisplayItems(index),
-                    ));
-        }));
+                      );
+                    }),
+              )
+            : Builder(builder: (con) {
+                scaffContext = con;
+                return Container(
+                    color: Color.fromRGBO(191, 255, 254, 0.1),
+                    child: (recommand)
+                        ? Container(
+                            width: dw(100),
+                            child: new Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(10),
+                                ),
+                                Image.asset(
+                                  'assets/images/product_not_found.jpg',
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 150,
+                                ),
+                                SizedBox(
+                                  height: 45,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 5),
+                                ),
+                                Text(
+                                  "Recommanded for you",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: "JosefinSans",
+                                      fontSize: 25),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(10),
+                                ),
+                                Container(
+                                    width: dw(100),
+                                    child: CarouselScreen.direct(
+                                        current.productStore.values.toList()))
+                              ],
+                            ),
+                          )
+                        : PageView.builder(
+                            onPageChanged: (value) {
+                              favourite =
+                                  isFavourite(loadedproduct[value].productId);
+                              print(productId.type);
+                              setState(() {
+                                currentPage = value;
+                              });
+                            },
+                            itemCount: loadedproduct.length,
+                            itemBuilder: (context, index) =>
+                                DisplayItems(index),
+                          ));
+              }));
   }
 
   Widget DisplayItems(int index) {
@@ -347,50 +346,80 @@ class _productScreenState extends State<productScreen>
                               children: <Widget>[
                                 Padding(
                                     padding: productId.type == "fav"
-                                        ? EdgeInsets.only(
-                                            left: dw(50) , top: 10)
+                                        ? EdgeInsets.only(left: dw(50), top: 10)
                                         : EdgeInsets.only(left: 20, top: 10),
                                     child: Row(
                                       children: <Widget>[
-                                        IconButton(icon: Icon(Icons.remove,size: 25,color: Colors.black,), onPressed:(){
-                                          if(current.permUser.myCart.products.contains(loadedproduct[index])) {
-                                            if (
-                                            current.permUser.myCart
-                                                .quantities[current.permUser.myCart.products.indexOf(loadedproduct[index])]-- == 0)
-                                              {
-                                                current.permUser.myCart.quantities.removeAt(current.permUser.myCart.products.indexOf(loadedproduct[index]));
-                                                current.permUser.myCart.products.remove(loadedproduct[index]);
+                                        IconButton(
+                                            icon: Icon(
+                                              Icons.remove,
+                                              size: 25,
+                                              color: Colors.black,
+                                            ),
+                                            onPressed: () {
+                                              if (current
+                                                  .permUser.myCart.products
+                                                  .contains(
+                                                      loadedproduct[index])) {
+                                                if (current.permUser.myCart
+                                                            .quantities[
+                                                        current.permUser.myCart
+                                                            .products
+                                                            .indexOf(
+                                                                loadedproduct[
+                                                                    index])]-- ==
+                                                    0) {
+                                                  current.permUser.myCart
+                                                      .quantities
+                                                      .removeAt(current.permUser
+                                                          .myCart.products
+                                                          .indexOf(
+                                                              loadedproduct[
+                                                                  index]));
+                                                  current
+                                                      .permUser.myCart.products
+                                                      .remove(
+                                                          loadedproduct[index]);
                                                 }
-                                            current.setMyCart();
-                                            setState(() {
-
-                                            });
-                                          }
-                                        }
-                                        ),
-                                        Text('${current.permUser.myCart.products.contains(loadedproduct[index])?current.permUser.myCart.quantities[current.permUser.myCart.products.indexOf(loadedproduct[index])]:0}',
+                                                current.setMyCart();
+                                                setState(() {});
+                                              }
+                                            }),
+                                        Text(
+                                          '${current.permUser.myCart.products.contains(loadedproduct[index]) ? current.permUser.myCart.quantities[current.permUser.myCart.products.indexOf(loadedproduct[index])] : 0}',
                                           overflow: TextOverflow.fade,
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
-                                          ),),
-                                        IconButton(icon:   Icon(Icons.add,size: 25,color: Colors.black,), onPressed: () {
-                                          if(current.permUser.myCart.products.contains(loadedproduct[index]))
-                                          current.permUser.myCart.quantities[current.permUser.myCart.products.indexOf(loadedproduct[index])]++;
-                                          else
-                                          {
-                                            current.permUser.myCart.products.add(loadedproduct[index]);
-                                            current.permUser.myCart.quantities.add(1);
-                                          }
-                                          current.setMyCart();
-                                          setState(() {
-
-                                          });
-                                        },)
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.add,
+                                            size: 25,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () {
+                                            if (current.permUser.myCart.products
+                                                .contains(loadedproduct[index]))
+                                              current.permUser.myCart
+                                                      .quantities[
+                                                  current
+                                                      .permUser.myCart.products
+                                                      .indexOf(loadedproduct[
+                                                          index])]++;
+                                            else {
+                                              current.permUser.myCart.products
+                                                  .add(loadedproduct[index]);
+                                              current.permUser.myCart.quantities
+                                                  .add(1);
+                                            }
+                                            current.setMyCart();
+                                            setState(() {});
+                                          },
+                                        )
                                       ],
-                                    )
-
-                                    ),
+                                    )),
                                 productId.type == "fav"
                                     ? new Container()
                                     : Padding(
@@ -411,7 +440,8 @@ class _productScreenState extends State<productScreen>
                                               addToFavourite(
                                                   loadedproduct[index]);
                                             else
-                                              removeFromFavourite(index);
+                                              removeFromFavourite(
+                                                  loadedproduct[index]);
                                             setState(() {});
                                           },
                                         )),
@@ -429,8 +459,8 @@ class _productScreenState extends State<productScreen>
                                   onPressed: () {
                                     imageurls
                                         .remove(loadedproduct[index].productId);
+                                    removeFromFavourite(loadedproduct[index]);
                                     loadedproduct.remove(index);
-                                    removeFromFavourite(index);
                                     if (loadedproduct.length == 0) {
                                       productId.type = "rec";
                                       loadedproduct =
@@ -469,7 +499,7 @@ void addToFavourite(Product product) {
   current.setFavouriteProducts();
 }
 
-void removeFromFavourite(int index) {
-  current.permUser.favouriteProduct.removeAt(index);
+void removeFromFavourite(Product product) {
+  current.permUser.favouriteProduct.remove(product);
   current.setFavouriteProducts();
 }

@@ -464,7 +464,7 @@ class Location {
     address=data['address'];
   }
   Location(this.latitude, this.longitude) {
-    var a=GoogleGeocoding("AIzaSyBH57M3ugU6cC7JaP2ClwreU8eNrgT-oDA");
+    var a=GoogleGeocoding(google_api_ky);
     a.findAddressesFromCoordinates(Coordinates(latitude, longitude)).then((ads){
       print("MAP ${ads[0].toMap()}");
       this.address="${ads[0].subLocality},${ads[0]},${ads[0].subLocality},${ads[0].locality}";
@@ -473,7 +473,7 @@ class Location {
   Location.fromAddress(String add){
     this.address=add;
     locationId=current.permUser.totalLocations.length+1;
-    GoogleGeocoding("AIzaSyBH57M3ugU6cC7JaP2ClwreU8eNrgT-oDA").findAddressesFromQuery(address).then((value) async{
+    GoogleGeocoding(google_api_ky).findAddressesFromQuery(address).then((value) async{
        this.latitude=value[0].coordinates.latitude;
        this.longitude=value[0].coordinates.longitude;
        current.permUser.totalLocations.add(this);
