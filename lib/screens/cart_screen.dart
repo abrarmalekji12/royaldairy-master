@@ -66,7 +66,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 20, top: 10),
-                    child: Text('${current.permUser.myCart.shop.name}',
+                    child: Text((current.isLogged()&&current.permUser.myCart.shop!=null)?'${current.permUser.myCart.shop.name}':"Shopping Cart",
                         style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 30.0,

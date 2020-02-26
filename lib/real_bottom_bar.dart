@@ -272,7 +272,10 @@ class _BottomBarState extends State<BottomBar> implements TickerProvider {
 
                       ),
                       onPressed: () {
+                        if(current.isLogged())
                         Navigator.of(context).pushNamed(CartScreen.cartRoute);
+                        else
+                          Navigator.of(context).pushNamed("/");
                       }), 
                   value: (current.isLogged())?current.permUser.myCart.products.length.toString():"!",
                 ),
