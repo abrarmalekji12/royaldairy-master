@@ -283,6 +283,7 @@ bool  isLogged(){
                     print("getting product is ${check['products'][j]} in favourable ");
                     prods.add(await getProduct(check['products'][j]));
                   }
+                  check['shopId']=i;
                   var shop=LocalShop.fromJson(check,prods);
                   filter.add(shop);
                   shopStore[i]=shop;
@@ -518,6 +519,7 @@ class Order {
     deliveredTime=json['deliveredTime'];
   }
   toJson() {
+    print("shop id ${shop.shopId}");
     return {
       'shop': shop==null?-1:shop.shopId,
       'products': [products.length]+products.map((val)=>val.productId).toList(),

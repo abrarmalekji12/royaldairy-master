@@ -244,17 +244,20 @@ class _BottomBarState extends State<BottomBar> implements TickerProvider {
                             'settings',
                             'change setting',
                             SettinsScreen.settingScreenRoute),
-                        createItems(
-                            Icons.input,
-                            (current.isLogged()) ? "Log-out" : "Log in",
-                            "use another account of yours", () {
-                          if (current.isLogged()) {
-                            current.logOut();
-                            setState(() {});
-                          } else {
-                            Navigator.pushNamed(context, '/');
-                          }
-                        })
+                        Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: createItems(
+                              Icons.input,
+                              (current.isLogged()) ? "Log-out" : "Log in",
+                              "use another account of yours", () {
+                            if (current.isLogged()) {
+                              current.logOut();
+                              setState(() {});
+                            } else {
+                              Navigator.pushNamed(context, '/');
+                            }
+                          }),
+                        )
                       ],
                     ))),
             resizeToAvoidBottomInset: false,
@@ -316,7 +319,7 @@ class _BottomBarState extends State<BottomBar> implements TickerProvider {
                                 ),
                               ),
                               new Padding(padding: EdgeInsets.all(5)),
-                              Container(
+                              current.isLogged()?Container(
                                 width: dw(100),
                                 height: dh(41),
                                 child: ListView(
@@ -344,7 +347,7 @@ class _BottomBarState extends State<BottomBar> implements TickerProvider {
                                     );
                                   }).toList(),
                                 ),
-                              )
+                              ):Container()
                             ],
                           ),
                         );
