@@ -161,7 +161,8 @@ class _BottomBarState extends State<BottomBar> implements TickerProvider {
                                       radius: 25,
                                       child: new Icon(
                                         Icons.person,
-                                        color: Colors.redAccent,
+
+                                        color: Color.fromRGBO(27, 113, 127, 1),
                                         size: 35,
                                       )),
                                   Padding(
@@ -258,7 +259,7 @@ class _BottomBarState extends State<BottomBar> implements TickerProvider {
                     ))),
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
-              backgroundColor: Colors.white54,
+              backgroundColor: Color.fromRGBO(73,167,204,1),
               centerTitle: false,
               actions: <Widget>[
                    Badge(
@@ -267,12 +268,13 @@ class _BottomBarState extends State<BottomBar> implements TickerProvider {
                       icon: Icon(
                         Icons.shopping_cart,
                         size: 30,
-                        color: Colors.indigoAccent,
+                        color: Colors.white,
+
                       ),
                       onPressed: () {
                         Navigator.of(context).pushNamed(CartScreen.cartRoute);
                       }), 
-                  value: current.permUser.myCart.products.length.toString(),
+                  value: (current.isLogged())?current.permUser.myCart.products.length.toString():"!",
                 ),
               ],
               title: new InkWell(
@@ -349,8 +351,9 @@ class _BottomBarState extends State<BottomBar> implements TickerProvider {
                 child: Row(
                   children: <Widget>[
                     Icon(
+
                       Icons.location_on,
-                      color: Colors.redAccent,
+                      color: Color.fromRGBO(27, 113, 127, 1),
                       size: 30,
                     ),
                     SizedBox(width:5),
@@ -376,12 +379,12 @@ class _BottomBarState extends State<BottomBar> implements TickerProvider {
             }),
             bottomNavigationBar: 
            BottomNavigationBar(
-             backgroundColor: Colors.white,
+             backgroundColor: Color.fromRGBO(73,167,204,1),
                 onTap: selectPage,
                currentIndex: selectpageIndex,
                unselectedFontSize: 10,
-             selectedItemColor: Colors.indigoAccent,
-               unselectedItemColor: Colors.grey.shade600,
+             selectedItemColor: Colors.black,
+               unselectedItemColor: Colors.white,
                items: [
                BottomNavigationBarItem(
                    icon: Icon(Icons.home), title: Text('home')),

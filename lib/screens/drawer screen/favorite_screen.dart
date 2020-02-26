@@ -24,8 +24,9 @@ int currentPage = 0;
    
     return Scaffold(
       body:Container(
-          color: Color.fromRGBO(191, 255, 254, 0.1),
+        //  color: Color.fromRGBO(191, 255, 254, 0.1),
           child: PageView.builder(
+            scrollDirection: Axis.vertical,
           onPageChanged: (value) {
             setState(() {
               currentPage = value;

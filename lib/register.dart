@@ -22,22 +22,22 @@ class _RegisterState extends State<Register> {
   static String registerRoute = "/registerRoute";
   final _form=GlobalKey<FormState>();
   signup(){
-      _form.currentState.save();
-        if(_form.currentState.validate())
-          {
-            if (_pass.text == _confirm.text )
-                  current
-                      .registerNewUser(
-                          _user.text, _pass.text, _mob.text, _name.text)
-                      .then((val) {
-                    if (val) {
-                      print('registered successfully');
-                      Navigator.pushReplacementNamed(
-                          context, BottomBar.bottomBarRoute);
-                    } else
-                      print("Error during registration");
-                  });
-          }
+    _form.currentState.save();
+    if(_form.currentState.validate())
+    {
+      if (_pass.text == _confirm.text )
+        current
+            .registerNewUser(
+            _user.text, _pass.text, _mob.text, _name.text)
+            .then((val) {
+          if (val) {
+            print('registered successfully');
+            Navigator.pushReplacementNamed(
+                context, BottomBar.bottomBarRoute);
+          } else
+            print("Error during registration");
+        });
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -49,19 +49,19 @@ class _RegisterState extends State<Register> {
     return new Scaffold(
       body: Form(
         key: _form,
-              child: ListView(
+        child: ListView(
           children: <Widget>[
-            
+
             Padding(
-                      padding: const EdgeInsets.only(top: 4.0, bottom: 10.0),
-                      child: Image.asset(
-                        'assets/images/logo.png',
-                        height: 200,
-                        width: 200,
-                      )),
+                padding: const EdgeInsets.only(top: 4.0, bottom: 10.0),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 200,
+                  width: 200,
+                )),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
+              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
               child: new TextFormField(
                 controller: _user,
                 keyboardType: TextInputType.emailAddress,
@@ -82,28 +82,28 @@ class _RegisterState extends State<Register> {
                 textAlignVertical: TextAlignVertical.center,
                 autofocus: false,
                 decoration: InputDecoration(
-                   enabledBorder: UnderlineInputBorder(      
-                      borderSide: BorderSide(color: Colors.indigoAccent),   
-                      ),  
-              focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.indigo),
-                   ),  
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromRGBO(27, 113, 127,1)),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromRGBO(27, 113, 127,1)),
+                    ),
                     labelText: 'Email',
                     labelStyle: TextStyle(
-                      fontFamily: 'OpenSans',
-                      color: Colors.indigoAccent
+                        fontFamily: 'OpenSans',
+                        color: Color.fromRGBO(27, 113, 127,1)
                     ),
                     prefixIcon: Icon(
                       Icons.email,
                       size: 30,
-                      color: Colors.indigo,
+                      color: Color.fromRGBO(27, 113, 127,1),
                     )),
               ),
             ),
-          
+
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
+              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
               child: new TextFormField(
                 controller: _name,
                 validator: (val) {
@@ -115,35 +115,35 @@ class _RegisterState extends State<Register> {
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w500,
                 ),
-                keyboardType: TextInputType.phone,
+
                 autocorrect: false,
                 textAlign: TextAlign.start,
                 showCursor: true,
                 textAlignVertical: TextAlignVertical.center,
                 autofocus: false,
                 decoration: InputDecoration(
-                   enabledBorder: UnderlineInputBorder(      
-                      borderSide: BorderSide(color: Colors.indigoAccent),   
-                      ),  
-              focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.indigo),
-                   ), 
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromRGBO(27, 113, 127,1)),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromRGBO(27, 113, 127,1)),
+                    ),
                     labelText: 'Name',
                     labelStyle: TextStyle(
-                      fontFamily: 'OpenSans',
-                       color: Colors.indigoAccent
+                        fontFamily: 'OpenSans',
+                        color: Color.fromRGBO(27, 113, 127,1)
                     ),
                     prefixIcon: Icon(
                       Icons.person,
                       size: 30,
-                      color: Colors.indigo,
+                      color: Color.fromRGBO(27, 113, 127,1),
                     )),
               ),
             ),
-            
+
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
+              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
               child: new TextFormField(
                 controller: _mob,
                 validator: (val) {
@@ -163,28 +163,28 @@ class _RegisterState extends State<Register> {
                 textAlignVertical: TextAlignVertical.center,
                 autofocus: false,
                 decoration: InputDecoration(
-                   enabledBorder: UnderlineInputBorder(      
-                      borderSide: BorderSide(color: Colors.indigoAccent),   
-                      ),  
-              focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.indigo),
-                   ), 
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromRGBO(27, 113, 127,1)),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromRGBO(27, 113, 127,1)),
+                    ),
                     labelText: 'Phone No',
                     labelStyle: TextStyle(
-                      fontFamily: 'OpenSans',
-                       color: Colors.indigoAccent
-                       
+                        fontFamily: 'OpenSans',
+                        color: Color.fromRGBO(27, 113, 127,1)
+
                     ),
                     prefixIcon: Icon(
                       Icons.phone,
                       size: 30,
-                      color: Colors.indigo,
+                      color: Color.fromRGBO(27, 113, 127,1),
                     )),
               ),
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
+              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
               child: new TextFormField(
                 controller: _pass,
                 validator: (val) {
@@ -206,28 +206,28 @@ class _RegisterState extends State<Register> {
                 autofocus: false,
                 obscureText: eye,
                 decoration: InputDecoration(
-                   enabledBorder: UnderlineInputBorder(      
-                      borderSide: BorderSide(color: Colors.indigoAccent),   
-                      ),  
-              focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.indigo),
-                   ), 
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromRGBO(27, 113, 127,1)),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromRGBO(27, 113, 127,1)),
+                    ),
                     labelText: 'Password',
                     labelStyle: TextStyle(
-                      fontFamily: 'OpenSans',
-                       color: Colors.indigoAccent
+                        fontFamily: 'OpenSans',
+                        color: Color.fromRGBO(27, 113, 127,1)
                     ),
                     prefixIcon: Icon(
                       Icons.security,
                       size: 30,
-                      color: Colors.indigo,
+                      color: Color.fromRGBO(27, 113, 127,1),
                     )),
               ),
             ),
-     
+
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
+              const EdgeInsets.symmetric(horizontal: 20.0, vertical:2),
               child: new TextFormField(
                 controller: _confirm,
                 keyboardType: TextInputType.text,
@@ -242,21 +242,21 @@ class _RegisterState extends State<Register> {
                   fontWeight: FontWeight.w500,
                 ),
                 decoration: InputDecoration(
-                   enabledBorder: UnderlineInputBorder(      
-                      borderSide: BorderSide(color: Colors.indigoAccent),   
-                      ),  
-              focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.indigo),
-                   ), 
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromRGBO(27, 113, 127,1)),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color.fromRGBO(27, 113, 127,1)),
+                    ),
                     labelText: 'Conform Password',
                     labelStyle: TextStyle(
-                      fontFamily: 'OpenSans',
-                       color: Colors.indigoAccent
+                        fontFamily: 'OpenSans',
+                        color: Color.fromRGBO(27, 113, 127,1)
                     ),
                     prefixIcon: Icon(
                       Icons.security,
                       size: 30,
-                      color: Colors.indigo,
+                      color: Color.fromRGBO(27, 113, 127,1),
                     )),
               ),
             ),
@@ -268,15 +268,15 @@ class _RegisterState extends State<Register> {
                     eye = !eye;
                     setState(() {});
                   },
-                  activeColor: Colors.purple),
+                  activeColor: Color.fromRGBO(27, 113, 127,1),),
               Padding(
-                    padding: EdgeInsets.only(right:15),
-                                  child: new Text(
+                padding: EdgeInsets.only(right:15),
+                child: new Text(
                   "show password",
                   style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.indigo,
-                    ),
+                    fontSize: 15,
+                    color: Color.fromRGBO(27, 113, 127,1),
+                  ),
                 ),
               )
             ]),
@@ -291,8 +291,8 @@ class _RegisterState extends State<Register> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     side: BorderSide(
-                        style: BorderStyle.solid, color: Colors.indigo)),
-                color: Colors.indigo,
+                        style: BorderStyle.solid, color: Color.fromRGBO(27, 113, 127,1))),
+                color: Color.fromRGBO(27, 113, 127,1),
                 padding: EdgeInsets.all(10),
               ),
             ),
@@ -301,7 +301,7 @@ class _RegisterState extends State<Register> {
               child: new InkWell(
                 child: new Text(
                   "already user, log-in",
-                  style: new TextStyle(color: Colors.indigo, fontSize: 23),
+                  style: new TextStyle(color: Color.fromRGBO(27, 113, 127,1), fontSize: 17),
                 ),
                 onTap: () {
                   Navigator.pushReplacementNamed(context, "/");

@@ -13,7 +13,7 @@ class SearchBox extends StatelessWidget {
       child: TextField(
               decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(      
-                      borderSide: BorderSide(color: Colors.indigoAccent.withOpacity(0.7),width:1),
+                      borderSide: BorderSide(color: Color.fromRGBO(27, 113, 127, 1),width:1),
                       ),    
               focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.black,width: 2),

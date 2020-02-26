@@ -70,221 +70,236 @@ class _CarouselScreenState extends State<CarouselScreen> {
           if (current.shopStore.containsKey(j))
             mainList.add(Container(
               width: MediaQuery.of(context).size.width / 1.3,
+              height: 300,
               decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey, blurRadius: 10, offset: Offset(8, 8))
+                ],
+                color: Colors.white,
                 // color: Color.fromRGBO(210, 255, 220, 1),
-                color: Colors.greenAccent.withOpacity(0.1),
+//                color: Colors.greenAccent.withOpacity(0.1),
                 // gradient: LinearGradient(
                 //     begin: Alignment.bottomCenter,
                 //     end: Alignment.topCenter,
                 //     colors: [Colors.blue, Colors.white]),
-                borderRadius: BorderRadius.all(Radius.circular(25)),
-                border: Border.fromBorderSide(BorderSide(
-                    color: Colors.black45, width: 1, style: BorderStyle.solid)),
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+//                border: Border.fromBorderSide(BorderSide(
+//                    color: Colors.black45, width: 1, style: BorderStyle.solid)),
               ),
-              child: ListView(
-                //  alignment: Alignment.topCenter,
+              child: Stack(
                 children: <Widget>[
-                  imaged.containsKey(product.productId)
-                      ? Padding(
-                          padding:
-                              EdgeInsets.only(left: 30, right: 30, top: 10),
-                          child: Image.network(
-                            imaged[product.productId],
-                            fit: BoxFit.fill,
-                            width: 250,
-                            height: 130,
-                          ),
-                        )
-                      : Shimmer.fromColors(
-                          child: new Image.asset("assets/images/logo.png",
-                              width: 270, height: 150),
-                          baseColor: Colors.grey,
-                          highlightColor: Colors.white),
-                  SizedBox(height: 5),
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.only(left: 10, right: 10),
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    child: Text(
-                                      product.productName,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontFamily: "JosefinSans",
-                                      ),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      "₹${product.price}",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 17),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(3),
-                            ),
-                            Text(
-                              "${product.description}",
-                              style: TextStyle(
-                                  fontFamily: "georgia", fontSize: 15),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(3),
-                            ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Row(
-                                children: <Widget>[
-                                  Icon(Icons.location_on,color: Colors.red,size:20,),
-                                  Padding(padding: EdgeInsets.all(2)),
-                                  Text(
-                                    '${current.shopStore[j].name},${current.shopStore[j].location.address}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: 'arial',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(3),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(right: 3),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  'distance ${getDistanceFromLatLonInKm(current.shopStore[j].location, current.permUser.totalLocations[current.permUser.locationIndex])}',
-                                  style: TextStyle(
-                                    color: Colors.redAccent,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'arial',
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              color: Colors.transparent,
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: <Widget>[
-                                  Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Row(
-                                        children: <Widget>[
-                                          IconButton(
-                                              icon: Icon(
-                                                Icons.remove,
-                                                size: 25,
-                                                color: Colors.black,
-                                              ),
-                                              onPressed: () {
-                                                if (current
-                                                    .permUser.myCart.products
-                                                    .contains(product)) {
-                                                  if (current.permUser.myCart
-                                                              .quantities[
-                                                          current.permUser
-                                                              .myCart.products
-                                                              .indexOf(
-                                                                  product)]-- ==
-                                                      0) {
-                                                    current.permUser.myCart
-                                                        .quantities
-                                                        .removeAt(current
-                                                            .permUser
-                                                            .myCart
-                                                            .products
-                                                            .indexOf(product));
-                                                    current.permUser.myCart
-                                                        .products
-                                                        .remove(product);
-                                                  }
-                                                  current.setMyCart();
-                                                  setState(() {});
-                                                }
-                                              }),
-                                          Text(
-                                            '${current.permUser.myCart.products.contains(product) ? current.permUser.myCart.quantities[current.permUser.myCart.products.indexOf(product)] : 0}',
-                                            overflow: TextOverflow.fade,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                          IconButton(
-                                            icon: Icon(
-                                              Icons.add,
-                                              size: 25,
-                                              color: Colors.black,
-                                            ),
-                                            onPressed: () {
-                                              if (current
-                                                  .permUser.myCart.products
-                                                  .contains(product))
-                                                current.permUser.myCart
-                                                        .quantities[
-                                                    current.permUser.myCart
-                                                        .products
-                                                        .indexOf(product)]++;
-                                              else {
-                                                current.permUser.myCart.products
-                                                    .add(product);
-                                                current
-                                                    .permUser.myCart.quantities
-                                                    .add(1);
-                                              }
-                                              current.setMyCart();
-                                              setState(() {});
-                                            },
-                                          )
-                                        ],
-                                      )),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: IconButton(
-                                      tooltip: 'add Favorite',
-                                      icon: Icon(
-                                        isFavourite(product.productId)
-                                            ? Icons.favorite
-                                            : Icons.favorite_border,
-                                        size: 28,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        if (!isFavourite(product.productId))
-                                          addToFavourite(product);
-                                        else
-                                          removeFromFavourite(product);
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ),
-                                ],
+                  Column(
+                    //  alignment: Alignment.topCenter,
+                    children: <Widget>[
+                      imaged.containsKey(product.productId)
+                          ? Padding(
+                              padding:
+                                  EdgeInsets.only(left: 35, right: 35, top: 13),
+                              child: Image.network(
+                                imaged[product.productId],
+                                fit: BoxFit.fill,
+                                width: 200,
+                                height: 130,
                               ),
                             )
-                          ],
-                        )),
-                  )
+                          : Shimmer.fromColors(
+                              child: new Image.asset("assets/images/logo.png",
+                                  width: 270, height: 150),
+                              baseColor: Colors.grey,
+                              highlightColor: Colors.white),
+//                  SizedBox(height: 5),
+                      Container(
+//                    padding: EdgeInsets.all(5),
+                        child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Container(
+                                  child: Text(
+                                    product.productName,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 23,
+                                      fontFamily: "JosefinSans",
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10, top: 4),
+                                  child: Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: Text(
+                                        "₹${product.price}",
+                                        style: TextStyle(
+                                            fontFamily: 'JosefinSans',
+                                            color: Colors.black,
+                                            fontSize: 17),
+                                      )),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5, right: 4,top: 4),
+                                  child: Text(
+                                    "${product.description}.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontFamily: "OpenSans", fontSize: 15),
+                                  ),
+                                ),
+
+                                Padding(
+                                  padding: EdgeInsets.all(4),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(right: 4),
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      'distance ${getDistanceFromLatLonInKm(current.shopStore[j].location, current.permUser.totalLocations[current.permUser.locationIndex])}',
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(6, 58, 28, 0.9),
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Montserrat',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  color: Colors.transparent,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    //  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      Container(
+                                        height: 30,
+                                        margin: EdgeInsets.only(left: 10),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.indigo),
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Container(
+                                              width: 25,
+                                              decoration: BoxDecoration(
+                                                  color: Color.fromRGBO(
+                                                      27, 113, 127, 1),
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(20),
+                                                      bottomLeft:
+                                                          Radius.circular(20))),
+                                              child: Center(
+                                                child: InkWell(
+                                                    child: Center(
+                                                      child: Text(
+                                                        '-',
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    onTap: () {
+                                                        if(decreament(product))
+                                                        current.setMyCart();
+                                                        setState(() {});
+                                                    }),
+                                              ),
+                                            ),
+                                            SizedBox(width: 5),
+                                            Center(
+                                              child: Text(
+                                                '${isProductInCart(product)[0]}',
+                                                overflow: TextOverflow.fade,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontFamily: 'JosefinSans'),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Container(
+                                              width: 25,
+                                              decoration: BoxDecoration(
+                                                  //color: Colors.indigo,
+                                                  color: Color.fromRGBO(
+                                                      27, 113, 127, 1),
+                                                  borderRadius: BorderRadius.only(
+                                                      topRight: Radius.circular(20),
+                                                      bottomRight:
+                                                          Radius.circular(20))),
+                                              child: Center(
+                                                child: InkWell(
+                                                  child: Center(
+                                                    child: Text('+',
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20,
+                                                        )),
+                                                  ),
+                                                  onTap: () {
+                                                    increament(product,current.shopStore[j]);
+                                                    current.setMyCart();
+                                                    setState(() {});
+                                                  },
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: IconButton(
+                                          tooltip: 'add Favorite',
+                                          icon: Icon(
+                                            isFavourite(product.productId)
+                                                ? Icons.favorite
+                                                : Icons.favorite_border,
+                                            size: 30,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () {
+                                            if (!isFavourite(product.productId))
+                                              addToFavourite(product);
+                                            else
+                                              removeFromFavourite(product);
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            )),
+                      )
+                    ],
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.location_on,color:Colors.redAccent),
+                        Text(
+                          '${current.shopStore[j].name},${current.shopStore[j].location.address}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            backgroundColor: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'OpenSans',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ));
@@ -295,13 +310,13 @@ class _CarouselScreenState extends State<CarouselScreen> {
             children: <Widget>[
               Container(
                 color: Colors.grey,
-                width: dw(100),
+                width: dw(80),
                 height: 310,
               ),
               Shimmer.fromColors(
                 child: Container(
                   color: Colors.grey,
-                  width: dw(100),
+                  width: dw(80),
                   height: 310,
                 ),
                 baseColor: Colors.transparent,
@@ -333,9 +348,9 @@ class _CarouselScreenState extends State<CarouselScreen> {
                     ],
                   )
                 : CarouselSlider(
-                    height: 310.0,
+                    height: 300.0,
                     initialPage: 0,
-                    enlargeCenterPage: true,
+//                    enlargeCenterPage: true,
                     autoPlay: true,
                     //  reverse: true,
                     autoPlayInterval: Duration(seconds: 5),
@@ -357,4 +372,38 @@ class _CarouselScreenState extends State<CarouselScreen> {
     }
     return false;
   }
+}
+void increament(Product product,LocalShop shop){
+  if(current.permUser.myCart.shop==null||shop.name!=current.permUser.myCart.shop.name) {
+    current.permUser.myCart.products=[product];
+    current.permUser.myCart.quantities=[1];
+    current.permUser.myCart.shop=shop;
+    return;
+  }
+    var temp = isProductInCart(product);
+    if (temp[0] > 0)
+      current.permUser.myCart.quantities[temp[1]]++;
+    else {
+      current.permUser.myCart.products.add(product);
+      current.permUser.myCart.quantities.add(1);
+    }
+}
+bool decreament(Product product){
+  var temp=isProductInCart(product);
+  if(temp[0]==0)
+    return false;
+  if(current.permUser.myCart.quantities[temp[1]]--==0) {
+    current.permUser.myCart.products.removeAt(temp[1]);
+    current.permUser.myCart.quantities.removeAt(temp[1]);
+}
+  return true;
+}
+List<int> isProductInCart(Product product){
+  var ans=[0,-1];
+for(int i=0;i<current.permUser.myCart.products.length;i++)
+    if(current.permUser.myCart.products[i].productId==product.productId) {
+      ans[0] = current.permUser.myCart.quantities[i];
+      ans[1]=i;
+    }
+  return ans;  
 }

@@ -146,7 +146,8 @@ bool  isLogged(){
    }
    bool isCartProductAvailable(Product product){
     for(LocalShop shop in shopStore.values)
-      if(shop.products.contains(product))
+      for(Product temp in shop.products)
+        if(temp.productId==product.productId)
         return true;
       return false;
    }
@@ -470,18 +471,19 @@ class Location {
       this.address="${ads[0].subLocality},${ads[0]},${ads[0].subLocality},${ads[0].locality}";
     });
   }
-  Location.fromAddress(String add){
-    this.address=add;
-    locationId=current.permUser.totalLocations.length+1;
-    GoogleGeocoding(google_api_ky).findAddressesFromQuery(address).then((value) async{
-       this.latitude=value[0].coordinates.latitude;
-       this.longitude=value[0].coordinates.longitude;
-       current.permUser.totalLocations.add(this);
-       current.permUser.locationIndex=current.permUser.totalLocations.length-1;
-       current.setUserLocationIndex(current.permUser.totalLocations.length-1);
-       current.saveUserLocation(this);
-    });
 
+   Location.fromAddress(String add)  {
+    this.address=add;
+  }
+  Future<void> setAll() async{
+    locationId=current.permUser.totalLocations.length+1;
+    var value=await GoogleGeocoding(google_api_ky).findAddressesFromQuery(address);
+    this.latitude=value[0].coordinates.latitude;
+    this.longitude=value[0].coordinates.longitude;
+    current.permUser.totalLocations.add(this);
+    current.permUser.locationIndex=current.permUser.totalLocations.length-1;
+    current.setUserLocationIndex(current.permUser.totalLocations.length-1);
+    current.saveUserLocation(this);
   }
   toJson() {
     return {'latitude': latitude, 'longitude': longitude,'address':address};

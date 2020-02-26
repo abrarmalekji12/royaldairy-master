@@ -107,7 +107,7 @@ class _UserEditProfileState extends State<UserEditProfile> {
                       helperStyle: TextStyle(color: Colors.red, fontSize: 15),
                       enabledBorder: UnderlineInputBorder(
                         borderSide:
-                            BorderSide(color: Colors.indigoAccent, width: 2),
+                            BorderSide(color: Color.fromRGBO(27, 113, 127,1), width: 2),
                       ),
                     ),
 
@@ -131,7 +131,7 @@ class _UserEditProfileState extends State<UserEditProfile> {
                       helperStyle: TextStyle(color: Colors.red, fontSize: 15),
                       enabledBorder: UnderlineInputBorder(
                         borderSide:
-                            BorderSide(color: Colors.indigoAccent, width: 2),
+                            BorderSide(color: Color.fromRGBO(27, 113, 127, 1), width: 2),
                       ),
                     ),
                     textInputAction: TextInputAction.next,
@@ -150,7 +150,7 @@ class _UserEditProfileState extends State<UserEditProfile> {
                         Row(
                           children: <Widget>[
                             Radio(
-                              activeColor: Colors.pinkAccent,
+                              activeColor: Colors.black,
                               value: 0,
                               onChanged: (value) {
                                 radioIndex = value;
@@ -164,7 +164,7 @@ class _UserEditProfileState extends State<UserEditProfile> {
                               height: 70,
                               child: PlacesAutocompleteField(
                                 apiKey:
-                                    google_api_ky,
+                                    'AIzaSyBH57M3ugU6cC7JaP2ClwreU8eNrgT-oDA',
                                 controller: editAdd,
                                 onChanged: (val) {
                                   errorAddress = "";

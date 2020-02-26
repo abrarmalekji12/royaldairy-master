@@ -7,7 +7,7 @@ class WalletScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      color: Colors.purple,
+      color: Color.fromRGBO(27, 113, 127, 1),
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
       child: Stack(

@@ -28,8 +28,9 @@ class _TypeOfMilkScreenState extends State<TypeOfMilkScreen> {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.blue.withOpacity(0.5),
+                    color: Colors.grey,
                     blurRadius: 5,
+                    offset: Offset(5,5)
                   )
                 ],
                 // color:Colors.red,

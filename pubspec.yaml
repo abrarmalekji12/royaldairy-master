@@ -59,8 +59,8 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-    - assets/images/brand.jpg
-    - assets/images/typeof.png
+    - assets/images/brand.png
+    - assets/images/types.png
     - assets/images/back.jpeg
     - assets/images/drawer.jpg
     - assets/images/amul/amul.jpg

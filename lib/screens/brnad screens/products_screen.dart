@@ -13,7 +13,7 @@ import '../../screens/brands_screen.dart';
 import '../../models/chhose.dart';
 
 int currentPage = 0;
-List<Product> loadedproduct = null;
+List<Product> loadedproduct=null;
 ChooseData productId;
 Map<int, String> imageurls = {};
 bool recommand = false;
@@ -27,15 +27,16 @@ class productScreen extends StatefulWidget {
     productId = data;
 loadedproduct = data.products;
   }
-
   @override
   _productScreenState createState() => _productScreenState();
 }
 
 class _productScreenState extends State<productScreen>
     with SingleTickerProviderStateMixin {
+  List<Widget> mainList=[];
+
   @override
-  void initState() {
+    void initState() {
     // TODO: implement initState
     super.initState();
       loadedproduct = productId.products;
@@ -56,17 +57,22 @@ class _productScreenState extends State<productScreen>
       setState(() {});
     print("Favourite $favourite");
   }
-
   @override
   Widget build(BuildContext context) {
+mainList=[];
+for(Product product  in loadedproduct)
+  for(int shopId in product.shopIds)
+    if(current.shopStore.containsKey(shopId))
+      mainList.add(DisplayItems(product,current.shopStore[shopId]));
+    // int a = findLength();
     return Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: productId.type == "fav" || recommand
             ? null
             : AppBar(
-                backgroundColor: Colors.indigoAccent,
-                title: Text(productId.animal),
-                actions: <Widget>[
+              title: Text(productId.animal),
+
+          actions: <Widget>[
                   Consumer<Cart>(
                     builder: (_, cart, ch) =>
                         Badge(child: ch, value: cart.getItemCount.toString()),
@@ -75,7 +81,7 @@ class _productScreenState extends State<productScreen>
                         icon: Icon(
                           Icons.shopping_cart,
                           size: 30,
-                          color: Colors.white,
+                          color: Color.fromRGBO(73,167,204,1),
                         ),
                         onPressed: () {
                           Navigator.of(context).pushNamed(CartScreen.cartRoute);
@@ -92,339 +98,186 @@ class _productScreenState extends State<productScreen>
                   )
                 ],
               ),
-        body: loadedproduct == null
-            ? Container(
-                child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, crossAxisSpacing: 30),
-                    itemCount: 8,
-                    itemBuilder: (con, i) {
-                      return Stack(
+        body:loadedproduct==null?
+        Container(
+        child: GridView.builder(gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,crossAxisSpacing: 30), itemCount:8,itemBuilder:(con,i){
+          return Stack(
+            children: <Widget>[
+              Shimmer.fromColors(child: Container(
+        width: dw(45),
+        color: Colors.grey,
+        height: dh(20),
+        ), baseColor: Colors.transparent, highlightColor: Colors.white),
+              Container(
+              width: dw(45),
+         color: Colors.grey,
+         height: dh(20),
+              ),
+            ],
+          );
+        }),
+          ):
+        Builder(builder: (con) {
+          scaffContext = con;
+          return Container(
+              color: Color.fromRGBO(191, 255, 254, 0.1),
+              child: (recommand)
+                  ? Container(
+                      width: dw(100),
+                      child: new Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Shimmer.fromColors(
-                              child: Container(
-                                width: dw(45),
-                                color: Colors.grey,
-                                height: dh(20),
-                              ),
-                              baseColor: Colors.transparent,
-                              highlightColor: Colors.white),
-                          Container(
-                            width: dw(45),
-                            color: Colors.grey,
-                            height: dh(20),
+                          Padding(
+                            padding: EdgeInsets.all(10),
                           ),
+                          Image.asset(
+                            'assets/images/product_not_found.jpg',
+                            width: MediaQuery.of(context).size.width,
+                            height: 150,
+                          ),
+                          SizedBox(
+                            height: 45,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top:5),
+                          ),
+                          Text(
+                            "Recommanded for you",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: "JosefinSans",
+                                fontSize: 25),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                          ),
+                          Container(
+                              width: dw(100),
+                              child: CarouselScreen.direct(
+                                  current.productStore.values.toList()))
                         ],
-                      );
-                    }),
+                      ),
+                    )
+                  :ListView(
+                children:mainList
               )
-            : Builder(builder: (con) {
-                scaffContext = con;
-                return Container(
-                    color: Color.fromRGBO(191, 255, 254, 0.1),
-                    child: (recommand)
-                        ? Container(
-                            width: dw(100),
-                            child: new Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.all(10),
-                                ),
-                                Image.asset(
-                                  'assets/images/product_not_found.jpg',
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 150,
-                                ),
-                                SizedBox(
-                                  height: 45,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 5),
-                                ),
-                                Text(
-                                  "Recommanded for you",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: "JosefinSans",
-                                      fontSize: 25),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(10),
-                                ),
-                                Container(
-                                    width: dw(100),
-                                    child: CarouselScreen.direct(
-                                        current.productStore.values.toList()))
-                              ],
-                            ),
-                          )
-                        : PageView.builder(
-                            onPageChanged: (value) {
-                              favourite =
-                                  isFavourite(loadedproduct[value].productId);
-                              print(productId.type);
-                              setState(() {
-                                currentPage = value;
-                              });
-                            },
-                            itemCount: loadedproduct.length,
-                            itemBuilder: (context, index) =>
-                                DisplayItems(index),
-                          ));
-              }));
+          );
+        }));
   }
 
-  Widget DisplayItems(int index) {
-    double blur = currentPage == index ? 10 : 0;
-    double offset = currentPage == index ? 5 : 0;
-    double top = currentPage == index ? 50 : 90;
-    top -= (productId.type == "fav" ? 40 : 0);
-    top -= (productId.type == "rec" ? 50 : 0);
-//    Color color1 = Color.fromRGBO(119, 144, 255, 0.8);
-    return AnimatedContainer(
-        duration: Duration(milliseconds: 1000),
-        curve: Curves.easeOutQuint,
-        margin: EdgeInsets.only(top: top, bottom: 55, right: 20, left: 10),
-        decoration: BoxDecoration(
-            // border:Border.all(color: Colors.red,width:2),
-            borderRadius: BorderRadius.circular(50),
-            border: Border.all(color: Colors.purple),
-            color: currentPage == index && index % 2 == 0
-                ? Color.fromRGBO(119, 144, 255, 0.8)
-                : Colors.deepOrangeAccent,
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black87,
-                  blurRadius: blur,
-                  offset: Offset(offset, offset))
-            ]),
-        child: new Stack(
-          children: <Widget>[
-            Container(
-              //  width:300,
-              height: 200,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                // color: Colors.red,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50)),
-              ),
+  Widget DisplayItems(Product product,LocalShop shop)
+  {
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            child: new Column(
+              children: <Widget>[
+                Container(
+                  height: 120,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    // color: Colors.red,
+                    border: Border.all(color:Colors.black),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25)),
+                  ),
 
-              child: Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: imageurls
-                                .containsKey(loadedproduct[index].productId)
-                            ? NetworkImage(
-                                imageurls[loadedproduct[index].productId])
-                            : AssetImage(
-                                "assets/images/loadingImage.png",
-                              ))),
-              ),
-            ),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                    width: MediaQuery.of(context).size.width,
+                  child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(50),
-                          bottomRight: Radius.circular(50),
-                          topLeft: Radius.circular(70),
-                          topRight: Radius.circular(70)),
-                      border:
-                          Border.all(color: Colors.deepOrangeAccent, width: 1),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black45,
-                          blurRadius: 70,
-                        )
-                      ],
-                      color: Color.fromRGBO(240, 231, 198, 1),
-                    ),
-                    height: MediaQuery.of(context).size.height / 1.8,
-                    child: SingleChildScrollView(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                              // width: MediaQuery.of(context).size.width / 1.7,
-                              padding: EdgeInsets.only(top: 20),
-                              child: Text(
-                                loadedproduct[index].productName,
-                                textAlign: TextAlign.center,
-                                // textDirection: TextDirection.rtl,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 35,
-                                  fontFamily: 'JosefinSans',
-                                ),
-                              )),
-                        ),
-                        Padding(
-                            padding: EdgeInsets.only(top: 15, left: 10),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Description :',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500),
-                                ))),
-                        SingleChildScrollView(
-                            child: Padding(
-                          padding:
-                              EdgeInsets.only(top: 10, left: 30, right: 30),
-                          child: Text(
-                            loadedproduct[index].description,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'OpenSans',
-                            ),
-                            textAlign: TextAlign.justify,
+                        image: DecorationImage(
+                            image: imageurls
+                                .containsKey(product.productId)
+                                ? NetworkImage(
+                                imageurls[product.productId])
+                                : AssetImage(
+                              "assets/images/loadingImage.png",
+                            ))),
+                  ),
+                ),
+                Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(25),
+                            bottomRight: Radius.circular(25),
                           ),
-                        )),
-                        Padding(
-                            padding: EdgeInsets.only(top: 15, left: 10),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Composition :',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500),
-                                ))),
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding:
-                                  EdgeInsets.only(top: 10, left: 30, right: 30),
-                              child: Text(
-                                "Fat is ${loadedproduct[index].fat} and SCC is ${loadedproduct[index].scc}",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontFamily: 'OpenSans',
-                                ),
-                                // textAlign: TextAlign.justify,
-                              ),
-                            )),
-                        Row(
+
+                          border:
+                          Border.all(color: Colors.black, width: 1),
+                          color: Color.fromRGBO(203,236,244,1),
+                        ),
+//                      height: MediaQuery.of(context).size.height / height,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Padding(
-                                padding: EdgeInsets.only(top: 15, left: 10),
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'price :',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500),
-                                    ))),
-                            Padding(
-                              padding:
-                                  EdgeInsets.only(top: 15, left: 20, right: 30),
-                              child: Text(
-                                '${loadedproduct[index].price}\ ₹ /1 ltr',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'OpenSans',
-                                ),
-                                textAlign: TextAlign.justify,
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.location_on,color:Colors.redAccent),
+                                  Text(
+                                    '${shop.name},${shop.location.address}',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      backgroundColor: Colors.white,
+                                      fontSize: 20,
+                                      fontFamily: 'OpenSans',
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                        Container(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Row(
-                              //  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Padding(
-                                    padding: productId.type == "fav"
-                                        ? EdgeInsets.only(left: dw(50), top: 10)
-                                        : EdgeInsets.only(left: 20, top: 10),
-                                    child: Row(
-                                      children: <Widget>[
-                                        IconButton(
-                                            icon: Icon(
-                                              Icons.remove,
-                                              size: 25,
-                                              color: Colors.black,
-                                            ),
-                                            onPressed: () {
-                                              if (current
-                                                  .permUser.myCart.products
-                                                  .contains(
-                                                      loadedproduct[index])) {
-                                                if (current.permUser.myCart
-                                                            .quantities[
-                                                        current.permUser.myCart
-                                                            .products
-                                                            .indexOf(
-                                                                loadedproduct[
-                                                                    index])]-- ==
-                                                    0) {
-                                                  current.permUser.myCart
-                                                      .quantities
-                                                      .removeAt(current.permUser
-                                                          .myCart.products
-                                                          .indexOf(
-                                                              loadedproduct[
-                                                                  index]));
-                                                  current
-                                                      .permUser.myCart.products
-                                                      .remove(
-                                                          loadedproduct[index]);
-                                                }
-                                                current.setMyCart();
-                                                setState(() {});
-                                              }
-                                            }),
-                                        Text(
-                                          '${current.permUser.myCart.products.contains(loadedproduct[index]) ? current.permUser.myCart.quantities[current.permUser.myCart.products.indexOf(loadedproduct[index])] : 0}',
-                                          overflow: TextOverflow.fade,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        IconButton(
-                                          icon: Icon(
-                                            Icons.add,
-                                            size: 25,
-                                            color: Colors.black,
-                                          ),
-                                          onPressed: () {
-                                            if (current.permUser.myCart.products
-                                                .contains(loadedproduct[index]))
-                                              current.permUser.myCart
-                                                      .quantities[
-                                                  current
-                                                      .permUser.myCart.products
-                                                      .indexOf(loadedproduct[
-                                                          index])]++;
-                                            else {
-                                              current.permUser.myCart.products
-                                                  .add(loadedproduct[index]);
-                                              current.permUser.myCart.quantities
-                                                  .add(1);
-                                            }
-                                            current.setMyCart();
-                                            setState(() {});
-                                          },
-                                        )
-                                      ],
-                                    )),
-                                productId.type == "fav"
-                                    ? new Container()
-                                    : Padding(
+                            Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                // width: MediaQuery.of(context).size.width / 1.7,
+                                  padding: EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    product.productName,
+                                    textAlign: TextAlign.center,
+                                    // textDirection: TextDirection.rtl,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 25,
+                                      fontFamily: 'JosefinSans',
+                                    ),
+                                  )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right:10),
+                              child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Text('${product.price}\ ₹ /ltr',style: TextStyle(
+                                    fontSize: 20,
+                                  ),)),
+                            ) ,
+                            Padding(
+                              padding:
+                              EdgeInsets.only(top: 10, left: 30, right: 30),
+                              child: Text(
+                                product.description,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: 'OpenSans',
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Container(
+                                padding: EdgeInsets.only(top: 10),
+                                child: Row(
+                                  children: <Widget>[
+                                   productId.type == "fav"
+                                        ? new Container()
+                                        : Padding(
                                         padding:
-                                            EdgeInsets.only(left: 180, top: 10),
+                                        EdgeInsets.only(left: 150, top: 7,right:0),
                                         child: IconButton(
                                           tooltip: 'add Favorite',
                                           icon: Icon(
@@ -438,46 +291,125 @@ class _productScreenState extends State<productScreen>
                                             favourite = !favourite;
                                             if (favourite)
                                               addToFavourite(
-                                                  loadedproduct[index]);
+                                                  product);
                                             else
-                                              removeFromFavourite(
-                                                  loadedproduct[index]);
+                                              removeFromFavourite(product);
                                             setState(() {});
                                           },
                                         )),
-                              ],
-                            )),
-                        productId.type == "fav"
-                            ? Container(
-                                margin: EdgeInsets.only(top: 20),
-                                child: FlatButton(
-                                  child: new Text(
-                                    'remove from favourites',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 20),
-                                  ),
-                                  onPressed: () {
-                                    imageurls
-                                        .remove(loadedproduct[index].productId);
-                                    removeFromFavourite(loadedproduct[index]);
-                                    loadedproduct.remove(index);
-                                    if (loadedproduct.length == 0) {
-                                      productId.type = "rec";
-                                      loadedproduct =
-                                          current.productStore.values.toList();
-                                      recommand = true;
-                                    }
-                                    setState(() {});
-                                  },
-                                ),
-                              )
-                            : Container()
-                      ],
-                    ))))
+                                  ],
+                                )),
+                            productId.type == "fav"
+                                ?Container()
+                                : Container()
+                          ],
+                        )
+                    ))
 
-            //     Padding(padding: ,child:Text('JosefinSans'))
-          ],
-        ));
+                //     Padding(padding: ,child:Text('JosefinSans'))
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+              margin: EdgeInsets.only(top:40,left:25),
+              height:30,
+              decoration: BoxDecoration(
+//                border: Border.all(color:Colors.indigo),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    width: 25,
+                    decoration: BoxDecoration(
+                        color: Color.fromRGBO(27, 113, 127, 1),
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20),bottomLeft: Radius.circular(20))
+                    ),
+                    child: Center(
+                      child: InkWell(
+                        child: Text('-',style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),),
+                        onTap:(){
+                          if(decreament(product))
+                            {
+                              current.setMyCart();
+                              setState(() {
+
+                              });
+                            }
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(width:5,),
+                  Center(
+                    child: Text(
+                      '${isProductInCart(product)[0]}',
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(
+
+                          fontSize: 17,
+                          fontFamily: 'JosefinSans'
+                      ),
+                    ),
+                  ),
+                  SizedBox(width:5,),
+                  Container(
+                    width: 25,
+                    decoration: BoxDecoration(
+                        color: Color.fromRGBO(27, 113, 127, 1),
+                        borderRadius: BorderRadius.only(topRight: Radius.circular(20),bottomRight: Radius.circular(20))
+                    ),
+                    child: Center(
+                      child: InkWell(
+                          child: Text('+',style:TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          )),
+                          onTap: () {
+                            increament(product,shop);
+                            current.setMyCart();
+                            setState(() {
+
+                            });
+                          }
+                      ),
+                    ),
+                  )
+
+                ],
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              padding: EdgeInsets.only(top:30,right: 30),
+              child:IconButton(
+                icon: Icon(Icons.delete,color:  Color.fromRGBO(27, 113, 127, 1),size: 35,),
+                onPressed: () {
+                  imageurls
+                      .remove(product.productId);
+                  loadedproduct.remove(product);
+                  removeFromFavourite(product);
+                  if (loadedproduct.length == 0) {
+                    productId.type = "rec";
+                    loadedproduct =
+                        current.productStore.values.toList();
+                    recommand = true;
+                  }
+                  setState(() {});
+                },
+              ),
+            ),
+          )
+        ],
+      ),
+    );
     /*
     * ChangeNotifierProvider.value(
           value: loadedproduct[index],
@@ -500,6 +432,11 @@ void addToFavourite(Product product) {
 }
 
 void removeFromFavourite(Product product) {
-  current.permUser.favouriteProduct.remove(product);
+  for(int i=0;i<current.permUser.favouriteProduct.length;i++)
+    if(current.permUser.favouriteProduct[i].productId==product.productId)
+      {
+        current.permUser.favouriteProduct.removeAt(i);
+        break;
+      }
   current.setFavouriteProducts();
 }

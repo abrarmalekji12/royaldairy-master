@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/login.dart';
 import 'package:flutter_app/screens/brnad%20screens/products_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../../providers/user.dart';
-
 import '../../screens/drawer screen/edit_user_profile.dart';
 
 int radioval = current.permUser.locationIndex + 1;
 
 class ProfileScreen extends StatefulWidget {
   static const profileScreenRoute = '/profile_Scren';
-
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -116,10 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 270,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [Color(0xFFf45d27), Color(0xFFf5851f)]),
+                      color:  Color.fromRGBO(27, 113, 127,1),
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(90),
                       )),
@@ -152,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: Container(
                                     width: 90,
                                     decoration: BoxDecoration(
-                                        color: Colors.blue,
+                                        color: Colors.white,
                                         border:
                                             Border.all(color: Colors.black45),
                                         borderRadius: BorderRadius.circular(10),
@@ -168,8 +162,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontFamily: 'OpenSans',
-                                              color: Colors.white,
+                                              color: Colors.black,
                                               fontSize: 20,
+                                              fontWeight: FontWeight.bold,
                                             ))),
                                   ))))
                     ],

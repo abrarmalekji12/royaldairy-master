@@ -32,11 +32,13 @@ class _BrandScreenState extends State<BrandScreen> {
         child: Stack(
           children: <Widget>[
             Container(
+    padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color:Colors.black),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.blue.withOpacity(0.5),
+                    color: Colors.black.withOpacity(0.5),
                     blurRadius: 5,
                   )
                 ],
@@ -53,6 +55,8 @@ class _BrandScreenState extends State<BrandScreen> {
           ],
         ));
   }
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -94,9 +98,6 @@ class _BrandScreenState extends State<BrandScreen> {
           margin: EdgeInsets.only(top: 40),
           child: brands.isEmpty? Column(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(10),
-              ),
               Image.asset(
                 'assets/images/product_not_found.jpg',
                 width: MediaQuery.of(context).size.width,
